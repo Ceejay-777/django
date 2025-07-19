@@ -1,4 +1,4 @@
-from rest_framework import generics, mixins, status
+from rest_framework import generics, mixins, status, permissions, authentication
 from .models import Product
 from .serializers import PrimaryProductSerializer
 from rest_framework.decorators import api_view
@@ -8,6 +8,8 @@ from django.shortcuts import get_object_or_404
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = PrimaryProductSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.DjangoModelPermissions]
     
     def perform_create(self, serializer):
         # serializer.save(user=self.request.user)
